@@ -39,8 +39,78 @@ Worker* expandArray(Worker *workers, int oldSize, int newSize) {
     }
 
     free(workers);
-
     return newArray;
+}
+
+void editWorker(Worker *workers, int count) {
+    if (count == 0) {
+        printf("Список пуст.\n");
+        return;
+    }
+
+    int index;
+    printf("Введите индекс работника: ");
+    scanf("%d", &index);
+
+    if (index < 0 || index >= count) {
+        printf("Неверный индекс.\n");
+        return;
+    }
+
+    int fieldChoice;
+
+    printf("\nЧто редактировать?\n");
+    printf("1. ФИО\n");
+    printf("2. Должность\n");
+    printf("3. Зарплату\n");
+    printf("4. Количество отгруженных товаров\n");
+    printf("Выбор: ");
+    scanf("%d", &fieldChoice);
+
+    switch (fieldChoice) {
+        case 1:
+            printf("Новое ФИО: ");
+            scanf(" %[^\n]", workers[index].fio);
+            break;
+        case 2:
+            printf("Новая должность: ");
+            scanf(" %[^\n]", workers[index].position);
+            break;
+        case 3:
+            printf("Новая зарплата: ");
+            scanf("%f", &workers[index].salary);
+            break;
+        case 4:
+            printf("Новое количество: ");
+            scanf("%d", &workers[index].shipped_goods);
+            break;
+        default:
+            printf("Неверный выбор.\n");
+    }
+}
+
+void searchByPosition(Worker *workers, int count) {
+    if (count == 0) {
+        printf("Список пуст.\n");
+        return;
+    }
+
+    char key[50];
+    int found = 0;
+
+    printf("Введите должность для поиска: ");
+    scanf(" %[^\n]", key);
+
+    for (int i = 0; i < count; i++) {
+        if (strcmp(workers[i].position, key) == 0) {
+            printWorker(workers[i], i);
+            found = 1;
+        }
+    }
+
+    if (!found) {
+        printf("Работники с такой должностью не найдены.\n");
+    }
 }
 
 int main() {
@@ -55,6 +125,8 @@ int main() {
         printf("1. Добавить работника\n");
         printf("2. Показать всех\n");
         printf("3. Удалить последнего\n");
+        printf("4. Редактировать по индексу\n");
+        printf("5. Поиск по должности\n");
         printf("0. Выход\n");
         printf("Выбор: ");
         scanf("%d", &choice);
@@ -67,7 +139,6 @@ int main() {
                     workers = expandArray(workers, capacity, newCapacity);
                     capacity = newCapacity;
                 }
-
                 inputWorker(&workers[count]);
                 count++;
                 break;
@@ -91,6 +162,13 @@ int main() {
                 }
                 break;
 
+            case 4:
+                editWorker(workers, count);
+                break;
+
+            case 5:
+                searchByPosition(workers, count);
+                break;
         }
 
     } while (choice != 0);
