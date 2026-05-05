@@ -58,12 +58,12 @@ int main() {
 
             case 3:
                 deleteLastWorker(&count);
-                printf("⚠️ Дерево НЕ обновляется\n");
+                printf("Дерево НЕ обновляется\n");
                 break;
 
             case 4:
                 editWorker(workers, count);
-                printf("⚠️ Дерево НЕ обновляется\n");
+                printf("Дерево НЕ обновляется\n");
                 break;
 
             case 5:
@@ -76,12 +76,12 @@ int main() {
 
             case 7:
                 insertWorkerAtPosition(&workers, &count, &capacity);
-                printf("⚠️ Дерево НЕ обновляется\n");
+                printf("Дерево НЕ обновляется\n");
                 break;
 
             case 8:
                 deleteWorkerByIndex(workers, &count);
-                printf("⚠️ Дерево НЕ обновляется\n");
+                printf("Дерево НЕ обновляется\n");
                 break;
 
             case 9: {
