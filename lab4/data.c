@@ -192,79 +192,87 @@ void sortWorkers(Worker *workers, int count) {
 
 
 int saveToFile(const char *filename, Worker *workers, int count) {
-    FILE *f = fopen(filename, "wb");
+    FILE *f = fopen(filename, "w");
     if (f == NULL) {
-        printf("Ошибка: не удалось открыть файл '%s' для записи.\n", filename);
+        printf("Ошибка: не удалось открыть файл '%s'\n", filename);
         return 0;
     }
 
-    if (fwrite(&count, sizeof(int), 1, f) != 1) {
-        printf("Ошибка записи количества записей.\n");
-        fclose(f);
-        return 0;
-    }
+    fprintf(f, "%d\n", count);
 
-    if (count > 0) {
-        size_t written = fwrite(workers, sizeof(Worker), count, f);
-        if ((int)written != count) {
-            printf("Ошибка: записано %zu из %d работников.\n", written, count);
-            fclose(f);
-            return 0;
-        }
+    for (int i = 0; i < count; i++) {
+        fprintf(f, "%s;%s;%.2f;%d\n",
+            workers[i].fio,
+            workers[i].position,
+            workers[i].salary,
+            workers[i].shipped_goods);
     }
 
     fclose(f);
-    printf("Данные сохранены в файл '%s' (%d записей).\n", filename, count);
+    printf("Сохранено в TXT '%s'\n", filename);
     return 1;
 }
 
 int loadFromFile(const char *filename, Worker **workers, int *count, int *capacity) {
-    FILE *f = fopen(filename, "rb");
+
+    FILE *f = fopen(filename, "r");
+
     if (f == NULL) {
-        printf("Файл '%s' не найден. Начинаем с пустого списка.\n", filename);
+
+        printf("Файл '%s' не найден\n", filename);
+
         return 0;
+
     }
 
-    int savedCount = 0;
-    if (fread(&savedCount, sizeof(int), 1, f) != 1) {
-        printf("Ошибка чтения файла '%s'.\n", filename);
+    int newCount;
+
+    if (fscanf(f, "%d\n", &newCount) != 1) {
+
+        printf("Ошибка чтения количества\n");
+
         fclose(f);
+
         return 0;
+
     }
 
-    if (savedCount < 0) {
-        printf("Файл повреждён (отрицательное количество записей).\n");
+    Worker *newArray = malloc(newCount * sizeof(Worker));
+
+    if (!newArray) {
+
         fclose(f);
+
         return 0;
+
     }
 
-    if (savedCount == 0) {
-        printf("Файл '%s' пуст.\n", filename);
-        fclose(f);
-        return 1;
+    for (int i = 0; i < newCount; i++) {
+
+        fscanf(f, "%99[^;];%49[^;];%f;%d\n",
+
+            newArray[i].fio,
+
+            newArray[i].position,
+
+            &newArray[i].salary,
+
+            &newArray[i].shipped_goods);
+
     }
 
-    Worker *newArray = (Worker*)malloc(savedCount * sizeof(Worker));
-    if (newArray == NULL) {
-        printf("Ошибка выделения памяти при загрузке.\n");
-        fclose(f);
-        return 0;
-    }
-
-    size_t readCount = fread(newArray, sizeof(Worker), savedCount, f);
     fclose(f);
 
-    if ((int)readCount != savedCount) {
-        printf("Ошибка: прочитано %zu из %d записей.\n", readCount, savedCount);
-        free(newArray);
-        return 0;
-    }
-
     free(*workers);
-    *workers   = newArray;
-    *count     = savedCount;
-    *capacity  = savedCount;
 
-    printf("Загружено %d работников из файла '%s'.\n", savedCount, filename);
+    *workers = newArray;
+
+    *count = newCount;
+
+    *capacity = newCount;
+
+    printf("Загружено из TXT '%s'\n", filename);
+
     return 1;
+
 }
