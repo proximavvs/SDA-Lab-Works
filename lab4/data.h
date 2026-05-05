@@ -1,7 +1,7 @@
 #ifndef DATA_H
 #define DATA_H
 
-#define DEFAULT_FILE "workers.dat"
+#define DEFAULT_FILE "workers.txt"
 
 typedef struct {
     char fio[100];
