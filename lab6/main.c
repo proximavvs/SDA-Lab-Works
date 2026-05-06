@@ -124,7 +124,7 @@ int main() {
                 }
 
                 // пересобираем дерево
-                freeTree(root);
+                deleteWholeTree(root);
                 root = NULL;
                 for (int i = 0; i < count; i++) {
                     root = insertNode(root, workers[i]);
