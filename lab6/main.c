@@ -40,6 +40,7 @@ int main() {
         printf("17. Максимальный элемент\n");
         printf("18. Высота дерева\n");
         printf("19. Сохранить дерево в файл\n");
+        printf("20. Обход дерева в ширину (BFS)\n");
         printf("0. Выход (с автосохранением)\n");
         printf("Выбор: ");
         scanf("%d", &choice);
@@ -213,7 +214,10 @@ int main() {
                 printf("Дерево сохранено в tree.txt\n");
                 break;
             }
-
+            case 20:
+                bfsTraversal(root);
+                break;
+                
             case 0:
                 printf("Сохранение перед выходом...\n");
                 saveToFile(DEFAULT_FILE, workers, count);

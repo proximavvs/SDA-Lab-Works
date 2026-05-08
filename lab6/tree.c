@@ -64,6 +64,33 @@ void postorder(Node *root) {
     printWorker(root->data, 0);
 }
 
+void bfsTraversal(Node *root) {
+
+    if (!root) {
+        printf("Дерево пустое\n");
+        return;
+    }
+
+    Node *queue[100];
+    int front = 0;
+    int rear = 0;
+
+    queue[rear++] = root;
+
+    while (front < rear) {
+
+        Node *current = queue[front++];
+
+        printWorker(current->data, 0);
+
+        if (current->left)
+            queue[rear++] = current->left;
+
+        if (current->right)
+            queue[rear++] = current->right;
+    }
+}
+
 // поиск
 Node* searchNode(Node *root, const char *key) {
 
