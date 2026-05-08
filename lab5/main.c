@@ -34,7 +34,8 @@ int main() {
         printf("11. Обход дерева (inorder)\n");
         printf("12. Обход дерева (preorder)\n");
         printf("13. Обход дерева (postorder)\n");
-        printf("14. Поиск в дереве по ФИО\n");
+        printf("14. Обход дерева в ширину (BFS)\n");
+        printf("15. Поиск в дереве по ФИО\n");
         printf("0. Выход (с автосохранением)\n");
         printf("Выбор: ");
         scanf("%d", &choice);
@@ -140,7 +141,11 @@ int main() {
                 postorder(root);
                 break;
 
-            case 14: {
+            case 14:
+                bfsTraversal(root);
+                break;
+                
+            case 15: {
                 char key[100];
                 printf("Введите ФИО: ");
                 scanf(" %[^\n]", key);

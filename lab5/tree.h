@@ -14,6 +14,7 @@ void inorder(Node *root);
 void preorder(Node *root);
 void postorder(Node *root);
 Node* searchNode(Node *root, const char *key);
+void bfsTraversal(Node *root);
 void freeTree(Node *root);
 
 #endif
